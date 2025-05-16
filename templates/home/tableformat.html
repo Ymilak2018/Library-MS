@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full-Width Table with More Data</title>
+    <style>
+        /* Reset default margin & padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Full Page Table */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1rem;
+        }
+
+        thead {
+            background-color: #333;
+            color: white;
+        }
+
+        th, td {
+            padding: 15px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Buttons */
+        .edit-btn, .delete-btn {
+            border: none;
+            padding: 8px 12px;
+            font-size: 0.9rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .edit-btn {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background-color: #218838;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            margin-left: 5px;
+        }
+
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+
+        /* Responsive Table */
+        @media (max-width: 768px) {
+            thead {
+                display: none;
+            }
+
+            tr {
+                display: block;
+                margin-bottom: 10px;
+                border: 1px solid #ddd;
+                padding: 10px;
+            }
+
+            td {
+                display: block;
+                text-align: right;
+                padding: 10px;
+                position: relative;
+            }
+
+            td::before {
+                content: attr(data-label);
+                font-weight: bold;
+                text-transform: uppercase;
+                float: left;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td data-label="ID">1</td>
+                <td data-label="Name">John Doe</td>
+                <td data-label="Email">john@example.com</td>
+                <td data-label="Role">Admin</td>
+                <td data-label="Actions">
+                    <button class="edit-btn">Edit</button>
+                    <button class="delete-btn">Delete</button>
+                </td>
+            </tr>
+            <tr>
+                <td data-label="ID">2</td>
+                <td data-label="Name">Jane Smith</td>
+                <td data-label="Email">jane@example.com</td>
+                <td data-label="Role">User</td>
+                <td data-label="Actions">
+                    <button class="edit-btn">Edit</button>
+                    <button class="delete-btn">Delete</button>
+                </td>
+            </tr>
+            <tr>
+                <td data-label="ID">3</td>
+                <td data-label="Name">Alice Johnson</td>
+                <td data-label="Email">alice@example.com</td>
+                <td data-label="Role">Editor</td>
+                <td data-label="Actions">
+                    <button class="edit-btn">Edit</button>
+                    <button class="delete-btn">Delete</button>
+                </td>
+            </tr>
+            <tr>
+                <td data-label="ID">4</td>
+                <td data-label="Name">Bob Williams</td>
+                <td data-label="Email">bob@example.com</td>
+                <td data-label="Role">Subscriber</td>
+                <td data-label="Actions">
+                    <button class="edit-btn">Edit</button>
+                    <button class="delete-btn">Delete</button>
+                </td>
+            </tr>
+            <tr>
+                <td data-label="ID">5</td>
+                <td data-label="Name">Charlie Brown</td>
+                <td data-label="Email">charlie@example.com</td>
+                <td data-label="Role">Moderator</td>
+                <td data-label="Actions">
+                    <button class="edit-btn">Edit</button>
+                    <button class="delete-btn">Delete</button>
+                </td>
+            </tr>
+            <tr>
+                <td data-label="ID">6</td>
+                <td data-label="Name">David Lee</td>
+                <td data-label="Email">david@example.com</td>
+                <td data-label="Role">Admin</td>
+                <td data-label="Actions">
+                    <button class="edit-btn">Edit</button>
+                    <button class="delete-btn">Delete</button>
+                </td>
+            </tr>
+            <tr>
+                <td data-label="ID">7</td>
+                <td data-label="Name">Emma Watson</td>
+                <td data-label="Email">emma@example.com</td>
+                <td data-label="Role">Editor</td>
+                <td data-label="Actions">
+                    <button class="edit-btn">Edit</button>
+                    <button class="delete-btn">Delete</button>
+                </td>
+            </tr>
+            <tr>
+                <td data-label="ID">8</td>
+                <td data-label="Name">Frank Castle</td>
+                <td data-label="Email">frank@example.com</td>
+                <td data-label="Role">User</td>
+                <td data-label="Actions">
+                    <button class="edit-btn">Edit</button>
+                    <button class="delete-btn">Delete</button>
+                </td>
+            </tr>
+            <tr>
+                <td data-label="ID">9</td>
+                <td data-label="Name">Grace Kelly</td>
+                <td data-label="Email">grace@example.com</td>
+                <td data-label="Role">Subscriber</td>
+                <td data-label="Actions">
+                    <button class="edit-btn">Edit</button>
+                    <button class="delete-btn">Delete</button>
+                </td>
+            </tr>
+            <tr>
+                <td data-label="ID">10</td>
+                <td data-label="Name">Henry Ford</td>
+                <td data-label="Email">henry@example.com</td>
+                <td data-label="Role">Admin</td>
+                <td data-label="Actions">
+                    <button class="edit-btn">Edit</button>
+                    <button class="delete-btn">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

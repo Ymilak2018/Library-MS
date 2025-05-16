@@ -1,0 +1,29 @@
+{% extends 'home/lms.html' %}
+{% block title %}Update Author{% endblock %}
+{% block body %}
+    <div class="form-container">
+        <form class="dynamic-form" method="post"  enctype="multipart/form-data">
+            {% csrf_token %}
+            <h2>Update Author</h2>
+            <hr>
+            <h3>Current Details:</h3>
+            <h4>Subject: {{old_sub}}</h4>
+            <h4>Name: {{old_name}}</h4>
+            <hr>
+            {% for field in form %}
+                <p>
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small>{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <span style="color: red;">{{ error }}</span>
+                    {% endfor %}
+                </p>
+            {% endfor %}
+            <input type="submit" value="Save Changes">
+        </form>
+    </div>
+
+{% endblock %}

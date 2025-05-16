@@ -1,0 +1,30 @@
+{% extends 'home/lms.html' %}
+
+{% block body %}
+<h1>Registered Subjects</h1>
+<table>
+        <thead>
+            <tr>
+                <th>Sr No.</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sub in subs %}
+            <tr>
+                <td data-label="ID">{{forloop.counter}}</td>
+                <td data-label="Name">{{sub.sub}}</td>
+                <td data-label="Actions">
+                    <button class="edit-btn" onclick="window.location.href='{% url 'editsubs' sub.id %}'">Edit</button>
+                    <form method="post" action="{% url 'delsub' sub.id %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button class="delete-btn">Delete</button>
+                    </form>
+                </td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

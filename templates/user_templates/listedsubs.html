@@ -1,0 +1,14 @@
+{% extends 'home/userdb.html' %}
+
+{% block title %} View Subjects {% endblock %}
+
+{% block body %}
+    <h1>Listed Subjects</h1>
+            <div class="books-grid" id="booksGrid">
+                {% for s in sub %}
+                    <div class="book-card" data-title="{{s.sub}}">
+                        <button class="sub-btn" onclick="window.location.href='{% url 'listedbooks' s.id %}'"><h3>{{s.sub}}</h3></button>
+                    </div>
+                {% endfor %}
+            </div>
+{% endblock %}

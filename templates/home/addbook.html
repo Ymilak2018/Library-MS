@@ -1,0 +1,27 @@
+{% extends 'home/lms.html' %}
+
+{% block title %}
+    Add Book
+{% endblock %}
+
+{% block body %}
+    <div class="form-container">
+        <form class="dynamic-form" method="post"  enctype="multipart/form-data">
+            {% csrf_token %}
+            <h1>Add New Book</h1>
+            {% for field in form %}
+                <p>
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small>{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <span style="color: red;">{{ error }}</span>
+                    {% endfor %}
+                </p>
+            {% endfor %}
+            <input type="submit" value="Save">
+        </form>
+    </div>
+{% endblock %}

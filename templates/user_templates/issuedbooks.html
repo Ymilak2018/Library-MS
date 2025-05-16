@@ -1,0 +1,37 @@
+{% block body %}
+{% if bwrs %}
+    <table>
+            <thead>
+                <tr>
+                    <th>Sr No.</th>
+                    <th>Cover Page</th>
+                    <th>Name</th>
+                    <th>Subject</th>
+                    <th>Availability</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bwr in bwrs %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td data-label="CP"><img src="{{book.coverp.url}}" style="width:80px; height: 80px"></td>
+                    <td data-label="Name">{{bwr.book}}</td>
+                    <td data-label="Subject">{{bwr.sub}}</td>
+                    <td data-label="date"> Available till {{bwr.rdate}}</td>
+                    <td data-label="Actions">
+                        <button class="edit-btn">Read</button>
+                        <button class="edit-btn">Return</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+{% else %}
+    <h3>No books issued!!!</h3>
+    <br>
+    <button class="edit-btn" onclick="window.location.href='{% url 'listedsubs'%}'">Issue a book</button>
+{% endif %}
+
+{% endblock %}

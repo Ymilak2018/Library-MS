@@ -1,0 +1,32 @@
+{% extends 'home/lms.html' %}
+
+{% block body %}
+<h1>User Approvals</h1>
+{% if app %}
+    <table>
+            <thead>
+                <tr>
+                    <th>Sr No.</th>
+                    <th>Book Name</th>
+                    <th>Issuer Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for a in app %}
+                <tr>
+                    <td data-label="ID">{{forloop.counter}}</td>
+                    <td data-label="Book Name">{{a.bookn}}</td>
+                    <td data-label="Issuer">{{a.issuer}}</td>
+                    <td data-label="Actions">
+                        <button class="edit-btn" onclick="window.location.href='{% url 'reqapp' a.id  %}'">Approve</button>
+                        <button class="delete-btn" onclick="window.location.href='{% url 'reqdec' a.id %}'">Decline</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+{% else %}
+    <h3>No approvals left, You are up-to-date !</h3>
+{% endif %}
+{% endblock %}

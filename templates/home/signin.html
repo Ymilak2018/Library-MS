@@ -1,0 +1,240 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System - Sign In</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        .lms-title {
+            text-align: center;
+            font-size: 48px;
+            color: #fff8f0;
+            padding: 40px 0 20px 0;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+        }
+
+
+        body {
+            min-height: 100vh;
+            background-image: url("{% static 'images/imgg111.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent overlay */
+        }
+
+        .signin-section {
+            background-color: #f8e8d4; /* Warm cream color matching the library's warm tones */
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            border: 2px solid #b85c38; /* Reddish-brown border matching wooden elements */
+        }
+
+        .signin-section h2 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #8b4513; /* Dark brown color matching wooden shelves */
+        }
+
+        .signin-section p {
+            font-size: 16px;
+            color: #5e3023; /* Darker brown for text */
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #8b4513; /* Dark brown color matching wooden shelves */
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #b85c38; /* Reddish-brown border */
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: #fff9f0; /* Very light cream background */
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #e67e22; /* Orange focus color */
+            box-shadow: 0 0 5px rgba(230, 126, 34, 0.5);
+            background-color: #fff;
+        }
+
+        .signin-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #b85c38; /* Reddish-brown matching wooden elements */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        .signin-btn:hover {
+            background-color: #e67e22; /* Brighter orange on hover */
+        }
+
+        .signup-link {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .signup-link a {
+            color: #b85c38; /* Reddish-brown matching wooden elements */
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+            color: #e67e22; /* Brighter orange on hover */
+        }
+
+        .errorlist {
+            color: #d35400; /* Dark orange for errors */
+            list-style-type: none;
+            padding: 0;
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        .messages {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .message-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .message-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .message-warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap');
+
+        .page-header {
+            background-color: rgba(0, 0, 0, 0.4); /* Same transparency as .container */
+            padding: 40px 0 20px 0;
+            text-align: center;
+            border-bottom: none; /* Remove the border line */
+        }
+
+
+        .lms-title {
+            font-family: 'Cinzel', serif; /* Classic elegant font */
+            font-size: 48px;
+            color: #f8e8d4; /* Rich brown for a classic feel */
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+    </style>
+</head>
+<body>
+<!--    <div class="page-header">-->
+<!--        <h1 class="lms-title">LMS+</h1>-->
+<!--    </div>-->
+
+    <div class="container">
+        <div class="signin-section">
+
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li class="message message-{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            {% block body %}
+
+            <h2>Sign In</h2>
+            <p>Please sign in to access your account</p>
+
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% if field.errors %}
+                            <ul class="errorlist">
+                                {% for error in field.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                <button type="submit" class="signin-btn">Sign In</button>
+            </form>
+            <div class="signup-link">
+                <p>Don't have an account? <a href="{% url 'signup' %}">Sign Up</a></p>
+                <p><a href="{% url 'password_reset' %}">Forgot Password?</a></p>
+            </div>
+
+            {% endblock body %}
+        </div>
+    </div>
+</body>
+</html>

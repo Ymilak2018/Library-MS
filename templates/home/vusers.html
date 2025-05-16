@@ -1,0 +1,48 @@
+{% extends 'home/lms.html' %}
+
+{% block body %}
+
+    <h1>Registered Users</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Sr No.</th>
+                <th>User ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td data-label="ID">{{forloop.counter}}</td>
+                <td data-label="ID">{{user.id}}</td>
+                <td data-label="Name">{{user.username}}</td>
+                <td data-label="Email">{{user.email}}</td>
+                {% if user.is_superuser %}
+                    <td data-label="Actions">
+                        <form method="post" action="#" style="display: inline;">
+                            {% csrf_token %}
+                            <button class="edit-btn">Edit</button>
+                        </form>
+                    </td>
+                {% else %}
+                    <td data-label="Actions">
+                        <form method="post" action="#" style="display: inline;">
+                            {% csrf_token %}
+                            <button class="edit-btn">Edit</button>
+                        </form>
+                        <form method="post" action="{% url 'deluser' user.id %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button class="delete-btn">Delete</button>
+                        </form>
+                    </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+{% endblock %}

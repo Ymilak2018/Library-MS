@@ -1,0 +1,65 @@
+{% extends 'home/lms.html' %}
+
+{% block body %}
+<style>
+.nr-btn {
+    background-color: blue;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.r-btn {
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+</style>
+<h1>User Activity</h1>
+<table>
+        <thead>
+            <tr>
+                <th>Sr No.</th>
+                <th>User Name</th>
+                <th>Book Borrowed</th>
+                <th>Subject</th>
+                <th>Borrowing Date </th>
+                <th>Returning Date </th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bwr in bwrs %}
+            <tr>
+                <td data-label="ID">{{forloop.counter}}</td>
+                <td data-label="name">{{bwr.bwr}}</td>
+                <td data-label="book">{{bwr.book}}</td>
+                <td data-label="sub">{{bwr.sub}}</td>
+                <td data-label="bdate">{{bwr.bdate}}</td>
+                <td data-label="rdate">{{bwr.rdate}}</td>
+                <td data-label="status">
+                    {% if bwr.status == "Not Returned" %}
+                        <button class="nr-btn">{{bwr.status}}</button>
+                    {% elif bwr.status == "Returned" %}
+                        <button class="r-btn">{{bwr.status}}</button>
+                    {% elif bwr.status == "Due" %}
+                        <button class="delete-btn">{{bwr.status}}</button>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+
+
+{% endblock %}

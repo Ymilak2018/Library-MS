@@ -1,0 +1,50 @@
+{% extends 'home/lms.html' %}
+{% block title %}View Subjects{% endblock %}
+{% block body %}
+    <style>
+            .search-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px auto;
+            gap: 10px;
+        }
+
+        .search-input {
+            padding: 8px 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 250px;
+        }
+
+        .search-button {
+            padding: 8px 16px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .search-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
+    <form method="post" action="{% url 'search_result' %}" class="search-form">
+        {% csrf_token %}
+        <input type="search" name="sbn" placeholder="Search by Book Name" class="search-input">
+        <button type="submit" class="search-button">Search</button>
+    </form>
+
+    <h1>Registered Subjects</h1>
+    <div class="books-grid" id="booksGrid">
+        {% for s in sub %}
+            <div class="book-card" data-title="{{s.sub}}">
+                <button class="sub-btn" onclick="window.location.href='{% url 'viewsubbooks' s.id %}'"><h3>{{s.sub}}</h3></button>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

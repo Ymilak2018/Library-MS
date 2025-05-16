@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LMS+ | Modern Library Management System</title>
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --wood-dark: #8B4513;
+            --wood-medium: #A0522D;
+            --wood-light: #CD853F;
+            --wood-pale: #DEB887;
+            --book-teal: #2A9D8F;
+            --book-magenta: #9D2A8F;
+            --book-yellow: #E9C46A;
+            --text-dark: #3A2618;
+            --text-light: #F5EBE0;
+            --shadow: rgba(0, 0, 0, 0.2);
+            --highlight: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--wood-pale);
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23deb887' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        /* Header styles */
+        header {
+            background: linear-gradient(135deg, var(--wood-dark) 0%, var(--wood-medium) 100%);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            border-bottom: 5px solid var(--wood-light);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--book-yellow);
+            font-family: 'Playfair Display', serif;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        .logo span {
+            color: var(--text-light);
+        }
+
+        .sign-in-btn {
+            background: linear-gradient(to right, var(--book-teal), var(--book-teal) 50%, var(--wood-medium) 50%);
+            background-size: 200% 100%;
+            background-position: right bottom;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        .sign-in-btn i {
+            margin-right: 8px;
+        }
+
+        .sign-in-btn:hover {
+            background-position: left bottom;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .sign-in-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(255, 255, 255, 0.2), transparent);
+            z-index: 1;
+        }
+
+        /* Hero section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://hebbkx1anhila5yf.public.blob.vercel-storage.com/imgg111.jpg-8FT6TbykHechhTqIVJvcwSFSa7ETnd.jpeg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 120px 0 80px;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(139, 69, 19, 0.8), transparent 30%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            max-width: 650px;
+            position: relative;
+            z-index: 2;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 56px;
+            margin-bottom: 25px;
+            line-height: 1.2;
+            position: relative;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(to right, var(--book-teal), var(--book-magenta));
+        }
+
+        .highlight {
+            color: var(--book-yellow);
+            position: relative;
+            display: inline-block;
+        }
+
+        .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background-color: rgba(233, 196, 106, 0.3);
+            z-index: -1;
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 35px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .get-started-btn {
+            background: linear-gradient(to right, var(--book-teal), var(--book-magenta));
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .get-started-btn i {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        .get-started-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .get-started-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .get-started-btn:hover::after {
+            left: 100%;
+        }
+
+        /* Features section */
+        .features {
+            padding: 100px 0;
+            background-color: var(--text-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .features::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 15px;
+            background: linear-gradient(to right, var(--book-teal), var(--book-magenta), var(--book-yellow));
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 42px;
+            margin-bottom: 60px;
+            color: var(--wood-dark);
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .features h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, var(--book-teal), var(--book-magenta));
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #fff 0%, #f8f4e9 100%);
+            border-radius: 12px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            border-top: 5px solid var(--wood-medium);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 0%, rgba(255, 255, 255, 0.1) 100%);
+            z-index: 1;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-15px) rotate(1deg);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-card h3 {
+            font-size: 26px;
+            margin-bottom: 20px;
+            color: var(--wood-dark);
+            position: relative;
+            padding-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+
+        .feature-card h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(to right, var(--book-teal), var(--wood-medium));
+        }
+
+        .feature-card h3 i {
+            margin-right: 12px;
+            font-size: 1.2em;
+            color: var(--book-teal);
+        }
+
+        .feature-card p {
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--text-dark);
+            flex-grow: 1;
+        }
+
+        /* Book decoration */
+        .book-decoration {
+            position: absolute;
+            bottom: -50px;
+            right: 50px;
+            width: 300px;
+            height: 200px;
+            background-color: transparent;
+            z-index: 1;
+            transform: rotate(-5deg);
+            display: flex;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .book {
+            width: 60px;
+            height: 180px;
+            background: linear-gradient(to right, var(--book-teal), var(--book-teal));
+            border-radius: 3px 10px 10px 3px;
+            position: relative;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+            margin: 0 -5px;
+        }
+
+        .book:nth-child(2) {
+            height: 190px;
+            background: linear-gradient(to right, var(--book-magenta), var(--book-magenta));
+            z-index: 2;
+        }
+
+        .book:nth-child(3) {
+            height: 170px;
+            background: linear-gradient(to right, var(--book-yellow), var(--book-yellow));
+            z-index: 1;
+        }
+
+        .book:nth-child(4) {
+            height: 185px;
+            background: linear-gradient(to right, var(--wood-medium), var(--wood-medium));
+            z-index: 0;
+        }
+
+        .book::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 10px;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px 0 0 3px;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--wood-dark) 0%, var(--wood-medium) 100%);
+            color: var(--text-light);
+            padding: 50px 0 30px;
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(to right, var(--book-teal), var(--book-magenta), var(--book-yellow));
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: var(--book-yellow);
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--book-yellow);
+        }
+
+        .footer-column p {
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-links a i {
+            margin-right: 8px;
+            font-size: 0.9em;
+        }
+
+        .footer-links a:hover {
+            color: var(--book-yellow);
+            transform: translateX(5px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background-color: var(--book-yellow);
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        /* Responsive design */
+        @media (max-width: 992px) {
+            h1 {
+                font-size: 48px;
+            }
+
+            .hero-content {
+                max-width: 600px;
+            }
+
+            .feature-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 40px;
+            }
+
+            .hero-content {
+                max-width: 100%;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .features h2 {
+                font-size: 36px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 20px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+
+            .logo {
+                font-size: 24px;
+            }
+
+            .sign-in-btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+
+            .get-started-btn {
+                padding: 12px 25px;
+                font-size: 16px;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .features {
+                padding: 60px 0;
+            }
+
+            .features h2 {
+                font-size: 30px;
+                margin-bottom: 40px;
+            }
+
+            .feature-card {
+                padding: 30px 20px;
+            }
+
+            .feature-card h3 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-book-open"></i>LMS<span>+</span>
+            </div>
+            <button class="sign-in-btn" onclick="window.location.href='{% url 'signin' %}'">
+                <i class="fas fa-sign-in-alt"></i>Sign In
+            </button>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container hero-content">
+            <h1>Welcome to <span class="highlight">LMS+</span></h1>
+            <p>
+                Discover a modern approach to library management with LMS+. Our comprehensive online system streamlines book cataloging, borrowing, and returns while providing an intuitive interface for both librarians and readers.
+            </p>
+            <button class="get-started-btn" onclick="window.location.href='{% url 'signup' %}'">
+                <i class="fas fa-book-reader"></i>Get Started
+            </button>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <h2>Why Choose LMS+</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3><i class="fas fa-tags"></i>Easy Cataloging</h3>
+                    <p>Quickly add and organize books with our intuitive cataloging system. Import data from ISBN, manage editions, and track inventory with ease.</p>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-exchange-alt"></i>Seamless Borrowing</h3>
+                    <p>Streamline the checkout process with barcode scanning, manage due dates, and send automated reminders to reduce overdue returns.</p>
+                </div>
+                <div class="feature-card">
+                    <h3><i class="fas fa-search"></i>Powerful Search</h3>
+                    <p>Find any book instantly with our advanced search capabilities. Filter by title, author, genre, availability, and more.</p>
+                </div>
+            </div>
+        </div>
+        <div class="book-decoration">
+            <div class="book floating"></div>
+            <div class="book" style="animation-delay: 0.5s;"></div>
+            <div class="book floating" style="animation-delay: 1s;"></div>
+            <div class="book" style="animation-delay: 1.5s;"></div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>About LMS+</h3>
+                    <p>LMS+ is a modern library management system designed to streamline operations for libraries of all sizes. Our mission is to make knowledge more accessible through intuitive technology.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-map-marker-alt"></i>123 Library Street, Booktown</a></li>
+                        <li><a href="#"><i class="fas fa-phone"></i>+91 9316042654</a></li>
+                        <li><a href="#"><i class="fas fa-envelope"></i>ddeenngg4@gmail.com</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 LMS+ | Modern Library Management System</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

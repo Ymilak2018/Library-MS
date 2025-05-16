@@ -1,0 +1,50 @@
+{% extends 'home/userdb.html' %}
+
+{% block title %} Return Books {% endblock %}
+
+{% block body %}
+
+{% if bwrs %}
+    <h1>Return Books</h1>
+    <table>
+            <thead>
+                <tr>
+                    <th>Sr No.</th>
+                    <th>Cover Page</th>
+                    <th>Name</th>
+                    <th>Subject</th>
+                    <th>Available Till ??</th>
+                    <th>Due ??</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bwr in bwrs %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td data-label="CP"><img src="{{bwr.img.url}}" style="width:90px; height: 90px"></td>
+                    <td data-label="Name">{{bwr.book}}</td>
+                    <td data-label="Subject">{{bwr.sub}}</td>
+                    <td data-label="date"> {{bwr.rdate}}</td>
+
+                    {% if bwr.status == "Due" %}
+                        <td>Yes !</td>
+                    {% else %}
+                        <td>No</td>
+                    {% endif %}
+
+                    <td data-label="Actions">
+                        <button type="submit" class="return-btn" onclick="window.location.href='{% url 'returnbooks1' bwr.id %}'">Return</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+{% else %}
+    <h3>No books issued!!!</h3>
+    <br>
+    <button class="edit-btn" onclick="window.location.href='{% url 'listedsubs'%}'">Issue a book</button>
+{% endif %}
+
+{% endblock body %}

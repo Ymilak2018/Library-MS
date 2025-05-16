@@ -1,0 +1,31 @@
+{% extends 'home/lms.html' %}
+
+{% block body %}
+<h1>Registered Authors</h1>
+<table>
+        <thead>
+            <tr>
+                <th>Sr No.</th>
+                <th>Name</th>
+                <th>Subject</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for au in auth %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td data-label="Author">{{au.name}}</td>
+                <td data-label="Subject">{{au.sub}}</td>
+                <td data-label="Actions">
+                    <button class="edit-btn" onclick="window.location.href='{% url 'editauth' au.id %}'">Edit</button>
+                    <form method="post" action="{% url 'delauth' au.id %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button class="delete-btn">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

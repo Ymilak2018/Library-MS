@@ -1,0 +1,523 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Library Management System{% endblock %}</title>
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-image: url("{% static 'images/img11.jpg' %}");
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            display: flex;
+        }
+        /* Sidebar styles */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #f4f4f4;
+            padding: 20px;
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        .sidebar h1 {
+            margin-bottom: 20px;
+            font-size: 1.6em;
+            font-weight: 600;
+        }
+        .sidebar nav {
+            flex-grow: 1;
+        }
+        .sidebar ul {
+            list-style: none;
+        }
+        .sidebar li {
+            margin-bottom: 10px;
+        }
+        .sidebar a {
+            text-decoration: none;
+            color: #333;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            font-weight: 500;
+        }
+        .sidebar a:hover, .sidebar a.active {
+            background-color: #ddd;
+            font-weight: 600;
+        }
+        .sidebar a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        .logout {
+            background-color: #f4f4f4;
+            color: #333;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            cursor: pointer;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: auto;
+            font-weight: 600;
+            font-size: 1em;
+        }
+        .logout i {
+            margin-right: 10px;
+        }
+        /* Dropdown styles */
+        .dropdown {
+            display: none;
+            padding-left: 20px;
+        }
+        .dropdown.active {
+            display: block;
+        }
+        .dropdown a {
+            padding: 8px 10px;
+            font-size: 0.95em;
+            font-weight: normal;
+        }
+        /* Main content styles */
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            width: calc(100% - 250px);
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        .dashboard-cards {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .card {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 20px;
+            width: 30%;
+        }
+        .card h3 {
+            margin-bottom: 10px;
+        }
+        .recent-activities {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        .recent-activities ul {
+            list-style: none;
+        }
+        .recent-activities li {
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+        }
+        .recent-activities li:last-child {
+            border-bottom: none;
+        }
+
+        .messages {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .message-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .message-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .message-warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+
+        .form-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            display: grid;
+            gap: 1.5rem;
+            margin-left: 0;  /* Align to the left */
+            margin-right: auto; /* Keep it aligned left */
+        }
+
+        h1 {
+            text-align: left;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #444;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="file"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            background-color: #f4f4f4;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #333;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            background-color: white;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+            grid-column: span 1;  /* Ensure the textarea spans only 1 column */
+        }
+
+        input[type="submit"] {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 1rem;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            grid-column: span 1;  /* Ensure the submit button spans only 1 column */
+        }
+
+        input[type="submit"]:hover {
+            background-color: #444;
+        }
+
+        small {
+            display: block;
+            margin-top: 0.25rem;
+            color: #777;
+        }
+
+        span[style="color: red;"] {
+            display: block;
+            margin-top: 0.25rem;
+            font-size: 0.875rem;
+            color: red;
+        }
+
+        /* Make the form a single column */
+        .dynamic-form {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1rem;
+        }
+
+        thead {
+            background-color: #333;
+            color: white;
+        }
+
+        th, td {
+            padding: 15px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Buttons */
+        .edit-btn, .delete-btn, .sub-btn, .read-btn, .return-btn {
+            border: none;
+            padding: 8px 12px;
+            font-size: 0.9rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .return-btn{
+            background-color: #00edf8;
+        }
+
+
+        .sub-btn{
+            background-color: white;
+        }
+
+        .edit-btn {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background-color: #218838;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            margin-left: 5px;
+        }
+
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+
+        /* Responsive Table */
+        @media (max-width: 768px) {
+            thead {
+                display: none;
+            }
+
+            tr {
+                display: block;
+                margin-bottom: 10px;
+                border: 1px solid #ddd;
+                padding: 10px;
+            }
+
+            td {
+                display: block;
+                text-align: right;
+                padding: 10px;
+                position: relative;
+            }
+
+            td::before {
+                content: attr(data-label);
+                font-weight: bold;
+                text-transform: uppercase;
+                float: left;
+            }
+        }
+        /* Ensure buttons inside forms are styled like other buttons */
+        form .delete-btn {
+            display: inline-block;
+            border: none;
+            padding: 8px 12px;
+            font-size: 0.9rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+            background-color: #dc3545;
+            color: white;
+            margin-left: 5px;
+        }
+
+        form .delete-btn:hover {
+            background-color: #c82333;
+        }
+
+
+        .book-container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* Change to 4 if you want four items per row */
+            gap: 20px;
+        }
+
+        .book-card {
+            background: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .book-card:hover {
+            transform: scale(1.05);
+        }
+
+        /* Responsive design for smaller screens */
+        @media (max-width: 768px) {
+            .books-grid {
+                grid-template-columns: repeat(2, 1fr); /* Two items per row on tablets */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .books-grid {
+                grid-template-columns: repeat(1, 1fr); /* One item per row on mobile */
+            }
+        }
+
+
+
+
+
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h3 style="font-weight: bold">Welcome, {{user.username}}!</h3>
+        <nav>
+            <ul>
+                <li><a href="{% url 'profile' %}"><i class="fas fa-user"></i> View Profile</a></li>
+                <li><a href="{% url 'userdb' %}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="{% url 'listedsubs' %}"><i class="fa-solid fa-book-bookmark"></i> View Books</a></li>
+                <li><a href="{% url 'returnbooks' %}"><i class="fa-solid fa-book-open-reader"></i> Return Books</a></li>
+            </ul>
+        </nav>
+        <button class="logout" onclick="window.location.href='{% url 'signout' %}'">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+    </div>
+
+
+    <div class="main-content">
+
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li class="message message-{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% block body %}
+
+            <section id="dashboard">
+                <h2>Dashboard</h2>
+                <div class="dashboard-cards">
+                    <div class="card">
+                        <h3><i class="fas fa-book"></i> Total Books Borrowed </h3>
+                        <p>{{total_books_borrowed}}</p>
+
+                    </div>
+                    <div class="card">
+                        <h3><i class="fas fa-book"></i> Books Due</h3>
+                        <p>{{due_books}}</p>
+                    </div>
+                    <div class="card">
+                        <h3><i class="fas fa-book-reader"></i> Books Returned</h3>
+                        <p>{{returned_books}}</p>
+
+                    </div>
+
+                </div>
+                <div class="recent-activities">
+                    <h2 style="text-align: center;">Issued Books</h2>
+                    {% if bwrs %}
+                        <table>
+                                <thead>
+                                    <tr>
+                                        <th>Sr No.</th>
+                                        <th>Cover Page</th>
+                                        <th>Name</th>
+                                        <th>Subject</th>
+                                        <th>Availability</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for bwr in bwrs %}
+                                    <tr>
+                                        <td>{{forloop.counter}}</td>
+                                        <td data-label="CP"><img src="{{bwr.img.url}}" style="width:90px; height: 90px"></td>
+                                        <td data-label="Name">{{bwr.book}}</td>
+                                        <td data-label="Subject">{{bwr.sub}}</td>
+                                        <td data-label="date"> Available till {{bwr.rdate}}</td>
+                                        <td data-label="Actions">
+                                            <button class="return-btn" onclick="window.location.href='{% url 'returnbooks' %}'">Return</button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <br>
+                    {% else %}
+                        <h3>No books issued!!!</h3>
+                        <br>
+                        <button class="edit-btn" onclick="window.location.href='{% url 'listedsubs'%}'">Issue a book</button>
+                    {% endif %}
+                </div>
+            </section>
+
+        {% endblock %}
+
+
+    </div>
+</body>
+<script>
+    setTimeout(() => {
+        const messages = document.querySelector('.messages');
+        if (messages) {
+            messages.style.transition = "opacity 0.5s ease";
+            messages.style.opacity = "0";
+            setTimeout(() => messages.remove(), 500); // Remove from DOM after fade out
+        }
+    }, 4000);
+</script>
+</html>
+

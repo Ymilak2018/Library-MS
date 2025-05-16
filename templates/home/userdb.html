@@ -1,0 +1,812 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Library Management System{% endblock %}</title>
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --wood-dark: #8B4513;
+            --wood-medium: #A0522D;
+            --wood-light: #CD853F;
+            --wood-pale: #DEB887;
+            --book-teal: #2A9D8F;
+            --book-magenta: #9D2A8F;
+            --book-yellow: #E9C46A;
+            --text-dark: #3A2618;
+            --text-light: #F5EBE0;
+            --shadow: rgba(0, 0, 0, 0.2);
+            --highlight: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            display: flex;
+            background-color: var(--wood-pale);
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23deb887' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+        }
+
+        /* Sidebar styles */
+        .sidebar {
+            width: 280px;
+            height: 100vh;
+            background: linear-gradient(135deg, var(--wood-dark) 0%, var(--wood-medium) 100%);
+            padding: 30px 20px;
+            position: fixed;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+            color: var(--text-light);
+            border-right: 8px solid var(--wood-dark);
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background-color: var(--wood-light);
+            border-radius: 3px;
+        }
+
+        .sidebar h3 {
+            margin-bottom: 30px;
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--text-light);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--wood-light);
+        }
+
+        .sidebar nav {
+            flex-grow: 1;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 5px;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 400;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar a:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background-color: var(--book-yellow);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar a:hover, .sidebar a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            font-weight: 500;
+        }
+
+        .sidebar a:hover:before, .sidebar a.active:before {
+            transform: scaleY(1);
+        }
+
+        .sidebar a i {
+            margin-right: 15px;
+            width: 20px;
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        .logout {
+            background: linear-gradient(to right, var(--wood-dark), var(--wood-medium));
+            color: var(--text-light);
+            border: none;
+            padding: 12px;
+            width: 100%;
+            cursor: pointer;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 30px;
+            font-weight: 500;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .logout:hover {
+            background: linear-gradient(to right, var(--wood-medium), var(--wood-dark));
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .logout i {
+            margin-right: 10px;
+        }
+
+        /* Main content styles */
+        .main-content {
+            margin-left: 280px;
+            padding: 30px;
+            width: calc(100% - 280px);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .main-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 200px;
+            background: linear-gradient(to bottom, rgba(222, 184, 135, 0.3), transparent);
+            z-index: -1;
+        }
+
+        h2 {
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            color: var(--wood-dark);
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(to right, var(--book-teal), var(--book-magenta));
+        }
+
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #fff 0%, #f8f4e9 100%);
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border-top: 5px solid var(--wood-medium);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 0%, rgba(255, 255, 255, 0.1) 100%);
+            z-index: 1;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h3 {
+            margin-bottom: 15px;
+            font-size: 1.4em;
+            color: var(--wood-dark);
+            display: flex;
+            align-items: center;
+        }
+
+        .card h3 i {
+            margin-right: 12px;
+            font-size: 1.2em;
+            background: linear-gradient(45deg, var(--wood-medium), var(--wood-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card p {
+            font-size: 2em;
+            font-weight: 600;
+            color: var(--book-teal);
+        }
+
+        .recent-activities {
+            background: linear-gradient(135deg, #fff 0%, #f8f4e9 100%);
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+            border-left: 5px solid var(--book-magenta);
+        }
+
+        .recent-activities h2 {
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            color: var(--wood-dark);
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(160, 82, 45, 0.2);
+            text-align: center;
+        }
+
+        .recent-activities h2::after {
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+        }
+
+        .recent-activities h3 {
+            text-align: center;
+            font-size: 1.4em;
+            color: var(--wood-medium);
+            margin: 20px 0;
+        }
+
+        /* Messages */
+        .messages {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 30px;
+        }
+
+        .message {
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message-success {
+            background-color: #d4edda;
+            color: #155724;
+            border-left: 4px solid #28a745;
+        }
+
+        .message-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-left: 4px solid #dc3545;
+        }
+
+        .message-info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border-left: 4px solid #17a2b8;
+        }
+
+        .message-warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border-left: 4px solid #ffc107;
+        }
+
+        /* Table styles */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 1rem;
+            background: linear-gradient(135deg, #fff 0%, #f8f4e9 100%);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        thead {
+            background: linear-gradient(to right, var(--wood-dark), var(--wood-medium));
+            color: white;
+        }
+
+        th, td {
+            padding: 15px 20px;
+            text-align: left;
+        }
+
+        th {
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-size: 0.85em;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid rgba(160, 82, 45, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: rgba(222, 184, 135, 0.05);
+        }
+
+        tbody tr:hover {
+            background-color: rgba(222, 184, 135, 0.1);
+        }
+
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        /* Book cover styling */
+        td img {
+            width: 90px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            border: 3px solid var(--wood-light);
+        }
+
+        td img:hover {
+            transform: scale(1.1) rotate(2deg);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Button styles */
+        .edit-btn, .delete-btn, .sub-btn, .read-btn, .return-btn {
+            border: none;
+            padding: 10px 15px;
+            font-size: 0.9rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .return-btn {
+            background: linear-gradient(to right, var(--book-teal), #00b8c2);
+            color: white;
+        }
+
+        .return-btn:hover {
+            background: linear-gradient(to right, #00b8c2, var(--book-teal));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        .sub-btn {
+            background-color: white;
+            color: var(--wood-dark);
+            border: 1px solid rgba(160, 82, 45, 0.2);
+        }
+
+        .sub-btn:hover {
+            background-color: rgba(160, 82, 45, 0.05);
+            border-color: var(--wood-medium);
+        }
+
+        .edit-btn {
+            background-color: var(--book-teal);
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            margin-left: 8px;
+        }
+
+        .delete-btn:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Book grid */
+        .book-container {
+            max-width: 100%;
+            margin: auto;
+            background: transparent;
+            padding: 0;
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .book-card {
+            background: linear-gradient(135deg, #fff 0%, #f8f4e9 100%);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            border-top: 4px solid var(--book-teal);
+        }
+
+        .book-card::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(42, 157, 143, 0.2) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        .book-card:hover {
+            transform: translateY(-8px) rotate(1deg);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Skylight effect */
+        .skylight {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 20px;
+            background: linear-gradient(to bottom, rgba(135, 206, 235, 0.3), transparent);
+            border-radius: 0 0 50% 50%;
+            z-index: -1;
+            box-shadow: 0 0 30px rgba(135, 206, 235, 0.2);
+        }
+
+        /* Book spine effect for sidebar */
+        .book-spine {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 8px;
+            height: 100%;
+            background: linear-gradient(to right, var(--book-teal), var(--book-magenta), var(--book-yellow));
+            z-index: 2;
+        }
+
+        /* Responsive design */
+        @media (max-width: 1200px) {
+            .sidebar {
+                width: 250px;
+            }
+            .main-content {
+                margin-left: 250px;
+                width: calc(100% - 250px);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 220px;
+            }
+            .main-content {
+                margin-left: 220px;
+                width: calc(100% - 220px);
+                padding: 20px;
+            }
+            .dashboard-cards {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 0;
+                transform: translateX(-100%);
+                transition: all 0.3s ease;
+                z-index: 1000;
+            }
+
+            .sidebar.active {
+                width: 280px;
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .menu-toggle {
+                display: block;
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                z-index: 1001;
+                background-color: var(--wood-medium);
+                color: white;
+                border: none;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            }
+
+            thead {
+                display: none;
+            }
+
+            tr {
+                display: block;
+                margin-bottom: 15px;
+                border: 1px solid rgba(160, 82, 45, 0.1);
+                border-radius: 8px;
+                padding: 15px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            }
+
+            td {
+                display: block;
+                text-align: right;
+                padding: 10px 0;
+                position: relative;
+                border-bottom: 1px solid rgba(160, 82, 45, 0.05);
+            }
+
+            td:last-child {
+                border-bottom: none;
+            }
+
+            td::before {
+                content: attr(data-label);
+                font-weight: 600;
+                text-transform: uppercase;
+                font-size: 0.75em;
+                color: var(--wood-dark);
+                float: left;
+            }
+
+            td img {
+                margin: 0 auto;
+                display: block;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .books-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+
+        .slide-up {
+            animation: slideUp 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- Mobile menu toggle button -->
+    <button class="menu-toggle" id="menuToggle" style="display: none;">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="sidebar" id="sidebar">
+        <div class="book-spine"></div>
+        <h3>Welcome, {{user.username}}!</h3>
+        <nav>
+            <ul>
+                <li><a href="{% url 'profile' %}"><i class="fas fa-user"></i> View Profile</a></li>
+                <li><a href="{% url 'userdb' %}" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="{% url 'listedsubs' %}"><i class="fa-solid fa-book-bookmark"></i> View Books</a></li>
+                <li><a href="{% url 'returnbooks' %}"><i class="fa-solid fa-book-open-reader"></i> Return Books</a></li>
+            </ul>
+        </nav>
+        <button class="logout" onclick="window.location.href='{% url 'signout' %}'">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+    </div>
+
+    <div class="main-content">
+        <div class="skylight"></div>
+
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li class="message message-{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% block body %}
+        <section id="dashboard" class="fade-in">
+            <h2>Dashboard</h2>
+            <div class="dashboard-cards slide-up">
+                <div class="card">
+                    <h3><i class="fas fa-book"></i> Total Books Borrowed</h3>
+                    <p>{{total_books_borrowed}}</p>
+                </div>
+                <div class="card">
+                    <h3><i class="fas fa-book"></i> Books Due</h3>
+                    <p>{{due_books}}</p>
+                </div>
+                <div class="card">
+                    <h3><i class="fas fa-book-reader"></i> Books Returned</h3>
+                    <p>{{returned_books}}</p>
+                </div>
+            </div>
+
+            <div class="recent-activities slide-up" style="animation-delay: 0.2s;">
+                <h2>Issued Books</h2>
+                {% if bwrs %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Sr No.</th>
+                                <th>Cover Page</th>
+                                <th>Name</th>
+                                <th>Subject</th>
+                                <th>Availability</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for bwr in bwrs %}
+                            <tr>
+                                <td data-label="Sr No.">{{forloop.counter}}</td>
+                                <td data-label="Cover Page"><img src="{{bwr.img.url}}" alt="Book cover"></td>
+                                <td data-label="Name">{{bwr.book}}</td>
+                                <td data-label="Subject">{{bwr.sub}}</td>
+                                <td data-label="Availability">Available till {{bwr.rdate}}</td>
+                                <td data-label="Actions">
+                                    <button class="return-btn" onclick="window.location.href='{% url 'returnbooks' %}'">
+                                        <i class="fas fa-undo-alt"></i> Return
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <h3>No books issued!</h3>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button class="edit-btn" onclick="window.location.href='{% url 'listedsubs'%}'">
+                            <i class="fas fa-book-open"></i> Issue a book
+                        </button>
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+        {% endblock %}
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if we're on mobile
+            const isMobile = window.innerWidth <= 768;
+
+            if (isMobile) {
+                const menuToggle = document.getElementById('menuToggle');
+                const sidebar = document.getElementById('sidebar');
+
+                menuToggle.style.display = 'flex';
+
+                menuToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('active');
+
+                    // Change icon based on sidebar state
+                    if (sidebar.classList.contains('active')) {
+                        menuToggle.innerHTML = '<i class="fas fa-times"></i>';
+                    } else {
+                        menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                    }
+                });
+
+                // Close sidebar when clicking outside
+                document.addEventListener('click', function(event) {
+                    if (!sidebar.contains(event.target) && event.target !== menuToggle) {
+                        sidebar.classList.remove('active');
+                        menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                    }
+                });
+            }
+        });
+
+        // Auto-hide messages
+        setTimeout(() => {
+            const messages = document.querySelector('.messages');
+            if (messages) {
+                messages.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+                messages.style.opacity = "0";
+                messages.style.transform = "translateY(-20px)";
+                setTimeout(() => messages.remove(), 500); // Remove from DOM after fade out
+            }
+        }, 4000);
+
+        // Add active class to current page link
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPath = window.location.pathname;
+
+            document.querySelectorAll('.sidebar a').forEach(link => {
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+{% extends 'home/userdb.html' %}
+
+{% block title %} View Books {% endblock %}
+
+{% block body %}
+{% if books %}
+    <h1>Registered Books</h1>
+    <table>
+            <thead>
+                <tr>
+                    <th>Sr No.</th>
+                    <th>Cover Page</th>
+                    <th>Name</th>
+                    <th>Author</th>
+                    <th>Subject</th>
+                    <th>Publisher</th>
+                    <th>Available</th>
+                    <th>Issue Book</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td data-label="CP"><img src="{{book.coverp.url}}" style="width:80px; height: 80px"></td>
+                    <td data-label="Name">{{book.title}}</td>
+                    <td data-label="Author">
+                        {% for author in book.author.all %}
+                            {{ author.name }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </td>
+
+                    <td data-label="Subject">{{book.sub}}</td>
+                    <td data-label="Pub">{{book.pub}}</td>
+                    {% if book.avail %}
+                        <td data-label="Avail">Yes</td>
+                        <td data-label="Actions">
+                            <button class="edit-btn" onclick="window.location.href='{% url 'bookissueform' book.id %}'">Issue</button>
+                        </td>
+                    {% else %}
+                        <td data-label="Avail">No</td>
+                        <td data-label="Actions">
+                            <button class="delete-btn" onclick="window.location.href='{% url 'bookissueform' book.id %}'" disabled>Not Available</button>
+                        </td>
+                    {% endif %}
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+{% else %}
+    <h1>No books available</h1>
+{% endif %}
+
+{% endblock %}
